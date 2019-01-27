@@ -44,7 +44,6 @@ class Homepage extends Component {
                     <Tabs>
                         <Tab heading="Tab 1">
                             <Container>
-                                {/*<Header/>*/}
                                 <Content padder>
                                     <Form>
                                         <Item floatingLabel>
