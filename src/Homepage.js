@@ -73,7 +73,7 @@ class Homepage extends Component {
                                                 <Text>Hide password?</Text>
                                             </Left>
                                             <Right>
-                                                <Radio selected={hidePassword} onPress={() => {this.setState({hidePassword: !hidePassword})}}/>
+                                                <CheckBox checked={hidePassword} onPress={() => {this.setState({hidePassword: !hidePassword})}}/>
                                             </Right>
                                         </ListItem>
                                         <Container style={styles.loginButton}>

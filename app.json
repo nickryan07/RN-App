@@ -1,9 +1,7 @@
 {
-  "name": "SocialApp",
-  "displayName": "SocialApp",
   "expo": {
-    "name": "Social",
-    "slug": "App",
+    "name": "SocialApp",
+    "slug": "SocialApp",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
