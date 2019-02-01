@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Modal, TouchableHighlight, Alert } from 'react-native';
 
 import { Container, Header, Tab, Tabs, TabHeading, Icon, Form, Text, Input, Item, Label, Content, ScrollableTab, Title, Body, Button, CheckBox, ListItem, Radio, Left, Right } from 'native-base';
 
@@ -27,6 +27,7 @@ class Homepage extends Component {
         this.state = {
             text: '',
             hidePassword: true,
+            modalVisible: false,
         }
     }
 
@@ -38,13 +39,34 @@ class Homepage extends Component {
         });
     }
 
+    alert = () => {
+        // Works on both iOS and Android
+        Alert.alert(
+            'Good Luck With That',
+            'There is no back-end lol.',
+            [
+            {text: 'Create Account', onPress: () => this.props.navigation.navigate('RoutineList')/*console.log('Create Account pressed')*/},
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+            },
+            {text: 'OK', onPress: () => /*console.log('OK Pressed')*/this.props.navigation.navigate('Profile')},
+            ],
+            {cancelable: false},
+        );
+    }
+
     render() {
         const { hidePassword } = this.state;
 
         
 
         return (
+            
+
             <Container>
+                
                 <Header>
                     <Body>
                         <Title>Homepage</Title>
@@ -79,7 +101,7 @@ class Homepage extends Component {
                                         <Container style={styles.loginButton}>
                                             
                                             <Content padder style={styles.button}>
-                                            <Button>
+                                            <Button onPress={() => {this.alert()}}>
                                                 <Text>
                                                     Login
                                                 </Text>
