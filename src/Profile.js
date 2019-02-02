@@ -3,7 +3,7 @@ import { StyleSheet, Alert } from 'react-native';
 
 import { Card, CardItem, Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right, Icon } from 'native-base';
 
-
+import CardView from 'react-native-cardview';
 
 const styles = StyleSheet.create({
     container: {
@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    button: {
+    userIcon: {
+        marginRight: 10,
     },
 });
 
@@ -35,7 +36,7 @@ class Profile extends Component {
         title: 'Profile',
         /* No more header config here! */
         headerRight: (
-            <Icon type="SimpleLineIcons" name="user" size={24} color="green" />
+            <Icon type="SimpleLineIcons" name="user" size={24} color="green" style={styles.userIcon}/>
         ),
     };
 
@@ -81,17 +82,20 @@ class Profile extends Component {
             ];
 
         return (
-            
-
             <Container>
-                
-                <Header>
-                    <Body>
-                        <Title>Homepage</Title>
-                    </Body>
-                </Header>
                 <Content>
-                {static_list.map((exercise, i) => (
+                    <CardView 
+                        style={{
+                            backgroundColor: 'white',
+                            margin: 20
+                        }}
+                        cardElevation={5}
+                        cardMaxElevation={5}
+                        cornerRadius={5}
+                        cornerOverlap={false}>
+                        <Text>lol</Text>
+                    </CardView>
+                {/*static_list.map((exercise, i) => (
                                         <Card key={i}>
                                             <CardItem>
                                                 <Body>
