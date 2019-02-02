@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
     },
     button: {
     },
+    yellowColor: {
+        backgroundColor: '#FFFC00',
+    }
 });
 
 class Homepage extends Component {
@@ -25,6 +28,8 @@ class Homepage extends Component {
         super(props);
 
         this.state = {
+            fontsLoaded: false,
+
             text: '',
             hidePassword: true,
             modalVisible: false,
@@ -37,7 +42,13 @@ class Homepage extends Component {
           'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
           'Ionicons': require('@expo/vector-icons/fonts/Ionicons.ttf'),
         });
+        this.setState({fontsLoaded: true});
     }
+
+    static navigationOptions = {
+        title: 'Home',
+        /* No more header config here! */
+    };
 
     alert = () => {
         // Works on both iOS and Android
@@ -58,21 +69,17 @@ class Homepage extends Component {
     }
 
     render() {
-        const { hidePassword } = this.state;
+        const { hidePassword, fontsLoaded } = this.state;
 
-        
+        if(!fontsLoaded) {
+            return ( <Expo.AppLoading /> );
+        }
 
         return (
             
 
             <Container>
-                
-                <Header>
-                    <Body>
-                        <Title>Homepage</Title>
-                    </Body>
-                </Header>
-                <Content>
+                <Content style={styles.yellowColor}>
                     <Tabs>
                         <Tab heading="Tab 1">
                             <Container>
@@ -99,13 +106,12 @@ class Homepage extends Component {
                                             </Right>
                                         </ListItem>
                                         <Container style={styles.loginButton}>
-                                            
                                             <Content padder style={styles.button}>
-                                            <Button onPress={() => {this.alert()}}>
-                                                <Text>
-                                                    Login
-                                                </Text>
-                                            </Button>
+                                                <Button onPress={() => {this.alert()}}>
+                                                    <Text>
+                                                        Login
+                                                    </Text>
+                                                </Button>
                                             </Content>
                                         </Container>
                                     </Form>

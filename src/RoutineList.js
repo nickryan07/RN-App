@@ -30,6 +30,14 @@ class RoutineList extends Component {
         }
     }
 
+    static navigationOptions = {
+        title: 'Routines',
+        /* No more header config here! */
+        headerRight: (
+            <Icon type="SimpleLineIcons" name="user" size={24} color="green" />
+        ),
+      };
+
     alert = () => {
         // Works on both iOS and Android
         Alert.alert(
@@ -65,7 +73,7 @@ class RoutineList extends Component {
 
             <Container>
                 
-                <Header>
+                {/* <Header>
                     <Left>
                         <Icon type="Ionicons" name="ios-add" color="blue"></Icon>
                     </Left>
@@ -75,7 +83,7 @@ class RoutineList extends Component {
                     <Right>
                     <Icon type="SimpleLineIcons" name="user" size={24} color="green" />
                     </Right>
-                </Header>
+                </Header> */}
                 <Content>
                     <List>
                     {static_list.map((exercise, i) => (

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Alert } from 'react-native';
 
-import { Card, CardItem, Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right } from 'native-base';
+import { Card, CardItem, Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right, Icon } from 'native-base';
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -28,6 +30,14 @@ class Profile extends Component {
             modalVisible: false,
         }
     }
+
+    static navigationOptions = {
+        title: 'Profile',
+        /* No more header config here! */
+        headerRight: (
+            <Icon type="SimpleLineIcons" name="user" size={24} color="green" />
+        ),
+    };
 
     alert = () => {
         // Works on both iOS and Android
