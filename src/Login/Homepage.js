@@ -94,6 +94,15 @@ class Homepage extends Component {
         );
     }
 
+    alertForgot = () => {
+        // Works on both iOS and Android
+        Alert.alert(
+            'In Progress',
+            'Unfinished feature.',
+            {cancelable: false},
+        );
+    }
+
     renderLoginForm = () => {
         const { hidePassword } = this.state;
         return (
@@ -129,7 +138,7 @@ class Homepage extends Component {
                                     <Icon name="arrow-forward" />    
                                 </Right>
                             </ListItem>
-                            <ListItem style={styles.formField} onPress={() => {}}>
+                            <ListItem style={styles.formField} onPress={() => {this.alertForgot()}}>
                                 <Left>
                                     <Text>Forgot password</Text>
                                 </Left>
