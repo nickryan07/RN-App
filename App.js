@@ -1,4 +1,5 @@
 import React from 'react';
+import Alert from 'react-native';
 
 import getTheme from './native-base-theme/components';
 import variables from "./native-base-theme/variables/commonColor";

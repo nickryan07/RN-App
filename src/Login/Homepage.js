@@ -3,7 +3,6 @@ import { StyleSheet, Alert, StatusBar } from 'react-native';
 
 import { Container, H2, Icon, Form, Text, Input, Item, Content, Button, ListItem, Left, Right } from 'native-base';
 
-import PropTypes from 'prop-types';
 import CardView from 'react-native-cardview';
 import { Switch } from 'react-native-base-switch';
 
@@ -147,7 +146,7 @@ class Homepage extends Component {
                                 </Right>
                             </ListItem>
                         </Form>
-                        <Button rounded onPress={() => {this.alert()}} style={styles.loginButton}>
+                        <Button rounded onPress={() => this.props.navigation.navigate('RoutineList')} style={styles.loginButton}>
                             <Text>
                                 Login
                             </Text>
