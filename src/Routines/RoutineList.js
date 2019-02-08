@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import { StyleSheet, Alert, StatusBar } from 'react-native';
 
 import { List, Icon, Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right } from 'native-base';
 import { alertUnfinished } from '../Constants';
@@ -119,9 +119,7 @@ class RoutineList extends Component {
             ];
 
         return (
-            
             <Container style={styles.container}>
-            
                 {this.renderAddRoutine()}
                 <Header searchBar rounded style={styles.listHeader}>
                     <Item>
@@ -134,17 +132,6 @@ class RoutineList extends Component {
                     <Icon type="MaterialIcons" name="playlist-add" size={24} style={styles.addIcon} onPress={() => {this.setState({showingAddRoutine: !showingAddRoutine})}}/>
                  
                 </Header>
-                {/* <Header>
-                    <Left>
-                        <Icon type="Ionicons" name="ios-add" color="blue"></Icon>
-                    </Left>
-                    <Body>
-                        <Title>My Routines</Title>
-                    </Body>
-                    <Right>
-                    <Icon type="SimpleLineIcons" name="user" size={24} color="green" />
-                    </Right>
-                </Header> */}
                 <Content>
                     <List>
                     {routineList.map((routine, i) => (
@@ -160,6 +147,9 @@ class RoutineList extends Component {
                                     
                     </List>
                 </Content>
+                <StatusBar
+                barStyle="light-content"
+                />
             </Container>
         );
     }
