@@ -109,6 +109,7 @@ class RoutineList extends Component {
     render() {
 
         const { showingAddRoutine, routineList } = this.state;
+        const { navigate } = this.props.navigation;
 
         const static_list = 
             [
@@ -135,7 +136,7 @@ class RoutineList extends Component {
                 <Content>
                     <List>
                     {routineList.map((routine, i) => (
-                        <ListItem key={i} onPress={() => {this.props.navigation.navigate('Routine')}}>
+                        <ListItem key={i} onPress={() => {navigate('Routine', {routineName: ''})}}>
                             <Left>  
                                 <Text style={styles.text}>{routine}</Text>
                             </Left>
