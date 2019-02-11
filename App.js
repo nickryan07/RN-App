@@ -1,5 +1,6 @@
 import React from 'react';
 import Alert from 'react-native';
+import Meteor, { withTracker } from 'react-native-meteor'
 
 import getTheme from './native-base-theme/components';
 import variables from "./native-base-theme/variables/commonColor";
@@ -7,7 +8,7 @@ import { StyleProvider } from 'native-base';
 import Router from './src/Routing/Router';
 
 
-export default class App extends React.Component {
+class App extends React.Component {
     constructor(props) {
         super(props);
 
@@ -15,6 +16,13 @@ export default class App extends React.Component {
             
         }
     }
+
+    
+
+    componentWillMount() {
+        Meteor.connect('ws://192.168.1.100:3003/websocket')
+    }
+
     render() {
         return (
             <StyleProvider style={getTheme(variables)}>
@@ -24,3 +32,19 @@ export default class App extends React.Component {
     }
 }
 
+export default withTracker( () => {
+    Meteor.subscribe('getUser')
+    return {
+        users: Meteor.collection('users').find({})
+    }
+})(App);
+
+//   export default withTracker(params => {
+//     const handle = Meteor.subscribe('todos');
+//     Meteor.subscribe('settings');
+  
+//     return {
+//       todosReady: handle.ready(),
+//       settings: Meteor.collection('settings').findOne(),
+//     };
+//   })(App);

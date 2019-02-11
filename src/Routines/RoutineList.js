@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar } from 'react-native';
+import Meteor from 'react-native-meteor';
 
 import { List, Icon, Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right } from 'native-base';
 import { alertUnfinished } from '../Constants';
@@ -145,7 +146,17 @@ class RoutineList extends Component {
                             </Right>
                         </ListItem>
                     ))}
-                                    
+                    {   
+                        Meteor.collection('users').find({}).map((user, i) => (
+                        <ListItem key={i} onPress={() => {navigate('Routine', {routineName: ''})}}>
+                            <Left>  
+                                <Text style={styles.text}>{user.username}</Text>
+                            </Left>
+                            <Right>
+                                <Icon name="arrow-forward" style={styles.arrowIcon}/>
+                            </Right>
+                        </ListItem>
+                    ))}          
                     </List>
                 </Content>
                 <StatusBar
