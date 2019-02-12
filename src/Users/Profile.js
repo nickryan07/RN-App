@@ -1,22 +1,16 @@
 import React, { Component } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 
-import { Card, CardItem, Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right, Icon } from 'native-base';
+import { Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right, Icon } from 'native-base';
 
 import CardView from 'react-native-cardview';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    loginButton : {
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: '#2D2D34',
     },
     userIcon: {
+        color: "#21CE99",
         marginRight: 10,
     },
 });
@@ -26,37 +20,25 @@ class Profile extends Component {
         super(props);
 
         this.state = {
-            text: '',
-            hidePassword: true,
-            modalVisible: false,
+
         }
     }
 
-    static navigationOptions = {
+    static navigationOptions = ({navigation}) => ({
         title: 'Profile',
-        /* No more header config here! */
         headerRight: (
-            <Icon type="SimpleLineIcons" name="user" size={24} color="green" style={styles.userIcon}/>
+            <Icon type="SimpleLineIcons" name="user" size={24} style={styles.userIcon} onPress={() => {navigation.navigate('Profile')}}/>
         ),
-    };
-
-    alert = () => {
-        // Works on both iOS and Android
-        Alert.alert(
-            'Good Luck With That',
-            'There is no back-end lol.',
-            [
-            {text: 'Profile', onPress: () => console.log('Profilepressed')},
-            {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-            },
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ],
-            {cancelable: false},
-        );
-    }
+        mode: 'modal',
+        headerStyle: {
+            backgroundColor:  '#2D2D34',
+            elevation: 0,
+            borderBottomWidth: 0,
+        },
+        headerTintColor: '#21CE99',
+        
+        /* No more header config here! */
+    });
 
     render() {
 
@@ -82,40 +64,14 @@ class Profile extends Component {
             ];
 
         return (
-            <Container>
+            <Container style={styles.container}>
+            
                 <Content>
-                    <CardView 
-                        style={{
-                            backgroundColor: 'white',
-                            margin: 20
-                        }}
-                        cardElevation={5}
-                        cardMaxElevation={5}
-                        cornerRadius={5}
-                        cornerOverlap={false}>
-                        <Text>lol</Text>
-                    </CardView>
-                {/*static_list.map((exercise, i) => (
-                                        <Card key={i}>
-                                            <CardItem>
-                                                <Body>
-                                                    <Text>
-                                                        {exercise}
-                                                    </Text>
-                                                </Body>
-                                            </CardItem>
-                                        </Card>
-                                    ))}
-                                    {/* <Card>
-                                        <CardItem>
-                                        <Body>
-                                            <Text>
-                                                Item 1
-                                            </Text>
-                                        </Body>
-                                        </CardItem>
-                                    </Card> */}
+
                 </Content>
+                <StatusBar
+                barStyle="light-content"
+                />
             </Container>
         );
     }

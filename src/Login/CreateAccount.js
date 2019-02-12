@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar } from 'react-native';
-import Meteor, { createContainer } from 'react-native-meteor';
+import Meteor, { Accounts } from 'react-native-meteor';
 
 import { Container, H2, Icon, Form, Text, Input, Item, Content, Button, ListItem, Left, Right } from 'native-base';
 
 import PropTypes from 'prop-types';
 import CardView from 'react-native-cardview';
 import { Switch } from 'react-native-base-switch';
+import { alertAPI } from '../Constants';
 
 const styles = StyleSheet.create({
     screenContainer: {
@@ -68,23 +69,6 @@ class CreateAccount extends Component {
         /* No more header config here! */
     };
 
-    alertAPI = (err) => {
-        // Works on both iOS and Android
-        Alert.alert(
-            'API Error!',
-            `${err}`,
-            [
-            {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-            },
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ],
-            {cancelable: false},
-        );
-    }
-
     addUser = () => {
         const { email, username, password } = this.state;
 
@@ -94,21 +78,29 @@ class CreateAccount extends Component {
             password: password,
         }
 
-        console.log(data)
-        
-        Meteor.call('addUser', data, (err, result) => {
-            if (err) {
-                console.log(err)
-                this.alertAPI(err);
+        console.log(data);
+
+        Accounts.createUser(data, (error) => {
+            if(error) {
+                alertAPI(error.reason);
             } else {
-                this.setState({
-                    email: '',
-                    username: '',
-                    password: '',
-                })
-                this.alertAPI('Success');
+                alertAPI('Success');
             }
-        })
+        });
+        
+        // Meteor.call('addUser', data, (err, result) => {
+        //     if (err) {
+        //         console.log(err)
+        //         this.alertAPI(err);
+        //     } else {
+        //         this.setState({
+        //             email: '',
+        //             username: '',
+        //             password: '',
+        //         })
+        //         this.alertAPI('Success');
+        //     }
+        // })
     }
 
     handleEmailChange = (text) => {

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar } from 'react-native';
+import Meteor, { Accounts } from 'react-native-meteor';
 
 import { Container, H2, Icon, Form, Text, Input, Item, Content, Button, ListItem, Left, Right } from 'native-base';
 
 import CardView from 'react-native-cardview';
 import { Switch } from 'react-native-base-switch';
+import { alertAPI, alertUnfinished } from '../Constants';
 
 const styles = StyleSheet.create({
     screenContainer: {
@@ -43,7 +45,8 @@ class Homepage extends Component {
         this.state = {
             fontsLoaded: false,
 
-            text: '',
+            userString: 'Dev',
+            password: 'dev',
             hidePassword: true,
             modalVisible: false,
 
@@ -102,6 +105,27 @@ class Homepage extends Component {
         );
     }
 
+    handleUserChange = (text) => {
+        this.setState({userString: text})
+    }
+
+    handlePasswordChange = (text) => {
+        this.setState({password: text})
+    }
+
+    handleSignIn = () => {
+        const { userString, password } = this.state;
+
+        Meteor.loginWithPassword(userString, password, (error) => {
+            if(error) {
+                alertAPI(error.reason);
+            } else {
+                //alertUnfinished();
+                this.props.navigation.navigate('RoutineList');
+            }
+        })
+    }
+
     renderLoginForm = () => {
         const { hidePassword } = this.state;
         return (
@@ -116,10 +140,10 @@ class Homepage extends Component {
                         </H2>
                         <Form>
                             <Item rounded /*floatingLabel*/ style={styles.formField}>
-                                <Input placeholder="Username" textContentType="username"/>
+                                <Input placeholder="Username or Email" textContentType="username" value={this.state.userString} onChangeText={this.handleUserChange}/>
                             </Item>
                             <Item rounded /*floatingLabel*/ style={styles.formField}> 
-                                <Input placeholder="Password" secureTextEntry={hidePassword} textContentType="password"/>
+                                <Input placeholder="Password" secureTextEntry={hidePassword} textContentType="password"  value={this.state.password} onChangeText={this.handlePasswordChange}/>
                             </Item>
                             <ListItem style={styles.formField}>
                                 <Left>
@@ -137,7 +161,7 @@ class Homepage extends Component {
                                     <Icon name="arrow-forward" />    
                                 </Right>
                             </ListItem>
-                            <ListItem style={styles.formField} onPress={() => {this.alertForgot()}}>
+                            <ListItem style={styles.formField} onPress={() => {alertUnfinished()}}>
                                 <Left>
                                     <Text>Forgot password</Text>
                                 </Left>
@@ -146,7 +170,10 @@ class Homepage extends Component {
                                 </Right>
                             </ListItem>
                         </Form>
-                        <Button rounded onPress={() => this.props.navigation.navigate('RoutineList')} style={styles.loginButton}>
+                        <Button rounded onPress={() => {
+                            this.handleSignIn()
+                            //this.props.navigation.navigate('RoutineList')
+                        }} style={styles.loginButton}>
                             <Text>
                                 Login
                             </Text>

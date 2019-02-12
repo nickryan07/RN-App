@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar } from 'react-native';
 import Meteor from 'react-native-meteor';
+import { withNavigation } from 'react-navigation';
 
 import { List, Icon, Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right } from 'native-base';
 import { alertUnfinished } from '../Constants';
@@ -48,10 +49,10 @@ class RoutineList extends Component {
         }
     }
 
-    static navigationOptions = {
+    static navigationOptions = ({navigation}) => ({
         title: 'Routines',
         headerRight: (
-            <Icon type="SimpleLineIcons" name="user" size={24} style={styles.userIcon} onPress={() => {alertUnfinished()}}/>
+            <Icon type="SimpleLineIcons" name="user" size={24} style={styles.userIcon} onPress={() => {navigation.navigate('Profile')}}/>
         ),
         mode: 'modal',
         headerStyle: {
@@ -62,7 +63,7 @@ class RoutineList extends Component {
         headerTintColor: '#21CE99',
         
         /* No more header config here! */
-    };
+    });
 
     handleTextChange = e => {
         this.setState({ [e.target.id]: e.target.value });
@@ -122,6 +123,7 @@ class RoutineList extends Component {
 
         return (
             <Container style={styles.container}>
+            
                 {this.renderAddRoutine()}
                 <Header searchBar rounded style={styles.listHeader}>
                     <Item>
@@ -167,4 +169,4 @@ class RoutineList extends Component {
     }
 }
 
-export default RoutineList;
+export default withNavigation(RoutineList);
