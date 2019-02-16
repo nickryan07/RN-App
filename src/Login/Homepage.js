@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar } from 'react-native';
-import Meteor, { Accounts } from 'react-native-meteor';
+import Meteor, { withTracker } from 'react-native-meteor';
 
 import { Container, H2, Icon, Form, Text, Input, Item, Content, Button, ListItem, Left, Right } from 'native-base';
 
@@ -48,18 +48,33 @@ class Homepage extends Component {
             userString: 'Dev',
             password: 'dev',
             hidePassword: true,
-            modalVisible: false,
+            loggedIn: false,
 
         }
     }
 
-    async componentWillMount() {
+    async loadFonts() {
         await Expo.Font.loadAsync({
-          'Roboto': require('native-base/Fonts/Roboto.ttf'),
-          'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-          'Ionicons': require('@expo/vector-icons/fonts/Ionicons.ttf'),
-        });
+            'Roboto': require('native-base/Fonts/Roboto.ttf'),
+            'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+            'Ionicons': require('@expo/vector-icons/fonts/Ionicons.ttf'),
+          });
+    }
+
+    isLoggingIn = () => {
+        console.log(this.props.isLoggingIn);
+        if(this.props.isLoggingIn) {
+            this.props.navigation.navigate('RoutineList');
+        }
+    }
+
+    componentWillMount() {
+        this.loadFonts();
         this.setState({fontsLoaded: true});
+    }
+
+    componentDidMount() {
+        this.isLoggingIn();
     }
 
     static navigationOptions = {
@@ -121,6 +136,7 @@ class Homepage extends Component {
                 alertAPI(error.reason);
             } else {
                 //alertUnfinished();
+                //console.log(Meteor.user());
                 this.props.navigation.navigate('RoutineList');
             }
         })
@@ -185,14 +201,13 @@ class Homepage extends Component {
     }
 
     render() {
-        const { fontsLoaded } = this.state;
+        const { fontsLoaded, loggedIn } = this.state;
 
         if(!fontsLoaded) {
             return ( <Expo.AppLoading /> );
         }
 
         return (
-            
 
             <Container style={styles.screenContainer}>
                 <Content>
@@ -203,4 +218,9 @@ class Homepage extends Component {
     }
 }
 
-export default Homepage;
+export default withTracker( () => {
+    return {
+        currentUser: Meteor.user(),
+        isLoggingIn: Meteor.loggingIn()
+    }
+})(Homepage);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar } from 'react-native';
-import Meteor from 'react-native-meteor';
+import Meteor, { withTracker } from 'react-native-meteor';
 import { withNavigation } from 'react-navigation';
 
 import { List, Icon, Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right } from 'native-base';
@@ -47,23 +47,23 @@ class RoutineList extends Component {
             showingAddRoutine: false,
             newRoutineName: '',
         }
-    }
-
-    static navigationOptions = ({navigation}) => ({
-        title: 'Routines',
-        headerRight: (
-            <Icon type="SimpleLineIcons" name="user" size={24} style={styles.userIcon} onPress={() => {navigation.navigate('Profile')}}/>
-        ),
-        mode: 'modal',
-        headerStyle: {
-            backgroundColor:  '#2D2D34',
-            elevation: 0,
-            borderBottomWidth: 0,
-        },
-        headerTintColor: '#21CE99',
         
-        /* No more header config here! */
-    });
+        this.navigationOptions = ({navigation}) => ({
+            title: this.props.currentUser,//'Routines',
+            headerRight: (
+                <Icon type="SimpleLineIcons" name="user" size={24} style={styles.userIcon} onPress={() => {navigation.navigate('Profile')}}/>
+            ),
+            mode: 'modal',
+            headerStyle: {
+                backgroundColor:  '#2D2D34',
+                elevation: 0,
+                borderBottomWidth: 0,
+            },
+            headerTintColor: '#21CE99',
+            
+            /* No more header config here! */
+        });
+    }
 
     handleTextChange = e => {
         this.setState({ [e.target.id]: e.target.value });
@@ -113,14 +113,6 @@ class RoutineList extends Component {
         const { showingAddRoutine, routineList } = this.state;
         const { navigate } = this.props.navigation;
 
-        const static_list = 
-            [
-                'Routine 1',
-                'Routine 2',
-                'Routine 3',
-                'Routine 4',
-            ];
-
         return (
             <Container style={styles.container}>
             
@@ -169,4 +161,9 @@ class RoutineList extends Component {
     }
 }
 
-export default withNavigation(RoutineList);
+export default withTracker( () => {
+    return {
+        currentUser: Meteor.user(),
+        isLoggingIn: Meteor.loggingIn()
+    }
+})(RoutineList);

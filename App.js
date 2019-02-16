@@ -1,6 +1,6 @@
 import React from 'react';
 import Alert from 'react-native';
-import Meteor, { withTracker } from 'react-native-meteor'
+import Meteor, { withTracker } from 'react-native-meteor';
 
 import configuration from './config';
 
@@ -17,12 +17,19 @@ class App extends React.Component {
         this.state = {
             
         }
+        this.data = {}
     }
 
     
 
     componentWillMount() {
         Meteor.connect(configuration.apiUrl)
+    }
+
+    getMeteorData() {
+        return {
+          user: Meteor.user(),
+        };
     }
 
     render() {
@@ -35,18 +42,7 @@ class App extends React.Component {
 }
 
 export default withTracker( () => {
-    //Meteor.subscribe('getUser')
     return {
-        //users: Meteor.collection('users').find({})
+        currentUser: Meteor.user(),
     }
 })(App);
-
-//   export default withTracker(params => {
-//     const handle = Meteor.subscribe('todos');
-//     Meteor.subscribe('settings');
-  
-//     return {
-//       todosReady: handle.ready(),
-//       settings: Meteor.collection('settings').findOne(),
-//     };
-//   })(App);

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, StatusBar } from 'react-native';
 
 import { Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right, Icon } from 'native-base';
-
+import { alertAPI } from '../Constants';
+import Meteor from 'react-native-meteor';
 import CardView from 'react-native-cardview';
 
 const styles = StyleSheet.create({
@@ -40,6 +41,18 @@ class Profile extends Component {
         /* No more header config here! */
     });
 
+    handleSignOut = () => {
+        const { userString, password } = this.state;
+
+        Meteor.logout((error) => {
+            if(error) {
+                alertAPI(error.reason);
+            } else {
+                this.props.navigation.navigate('Homepage');
+            }
+        })
+    }
+
     render() {
 
         const { hidePassword } = this.state;
@@ -67,7 +80,14 @@ class Profile extends Component {
             <Container style={styles.container}>
             
                 <Content>
-
+                    <Button rounded color='error' onPress={() => {
+                        this.handleSignOut()
+                        //this.props.navigation.navigate('RoutineList')
+                    }} style={styles.loginButton}>
+                        <Text>
+                            Sign Out
+                        </Text>
+                    </Button>
                 </Content>
                 <StatusBar
                 barStyle="light-content"
