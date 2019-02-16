@@ -47,22 +47,7 @@ class RoutineList extends Component {
             showingAddRoutine: false,
             newRoutineName: '',
         }
-        
-        this.navigationOptions = ({navigation}) => ({
-            title: this.props.currentUser,//'Routines',
-            headerRight: (
-                <Icon type="SimpleLineIcons" name="user" size={24} style={styles.userIcon} onPress={() => {navigation.navigate('Profile')}}/>
-            ),
-            mode: 'modal',
-            headerStyle: {
-                backgroundColor:  '#2D2D34',
-                elevation: 0,
-                borderBottomWidth: 0,
-            },
-            headerTintColor: '#21CE99',
-            
-            /* No more header config here! */
-        });
+    
     }
 
     handleTextChange = e => {

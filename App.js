@@ -26,12 +26,6 @@ class App extends React.Component {
         Meteor.connect(configuration.apiUrl)
     }
 
-    getMeteorData() {
-        return {
-          user: Meteor.user(),
-        };
-    }
-
     render() {
         return (
             <StyleProvider style={getTheme(variables)}>

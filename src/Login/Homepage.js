@@ -77,40 +77,6 @@ class Homepage extends Component {
         this.isLoggingIn();
     }
 
-    static navigationOptions = {
-        mode: 'modal',
-        headerStyle: {
-            backgroundColor:  '#21CE99',
-            shadowColor: 'transparent',
-            elevation: 0,
-            borderBottomWidth: 0,
-        },
-        shadowRadius: 0,
-        shadowOffset: {
-            height: 0,
-        },
-        
-        /* No more header config here! */
-    };
-
-    alert = () => {
-        // Works on both iOS and Android
-        Alert.alert(
-            'Good Luck With That',
-            'There is no back-end lol.',
-            [
-            {text: 'Create Account', onPress: () => this.props.navigation.navigate('RoutineList')/*console.log('Create Account pressed')*/},
-            {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-            },
-            {text: 'OK', onPress: () => /*console.log('OK Pressed')*/this.props.navigation.navigate('Profile')},
-            ],
-            {cancelable: false},
-        );
-    }
-
     alertForgot = () => {
         // Works on both iOS and Android
         Alert.alert(
