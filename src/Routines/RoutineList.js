@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import { StyleSheet, Alert, StatusBar } from 'react-native';
+import Meteor, { withTracker } from 'react-native-meteor';
+import { withNavigation } from 'react-navigation';
 
 import { List, Icon, Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right } from 'native-base';
-import { alertUnfinished } from '../Constants';
+import { alertUnfinished, alertAPI } from '../Constants';
 
 import Dialog from 'react-native-dialog';
 
@@ -40,41 +42,25 @@ class RoutineList extends Component {
         super(props);
 
         this.state = {
-            routineList: [],
             hidePassword: true,
             showingAddRoutine: false,
             newRoutineName: '',
         }
+    
     }
-
-    static navigationOptions = {
-        title: 'Routines',
-        headerRight: (
-            <Icon type="SimpleLineIcons" name="user" size={24} style={styles.userIcon} onPress={() => {alertUnfinished()}}/>
-        ),
-        mode: 'modal',
-        headerStyle: {
-            backgroundColor:  '#2D2D34',
-            elevation: 0,
-            borderBottomWidth: 0,
-        },
-        headerTintColor: '#21CE99',
-        
-        /* No more header config here! */
-    };
 
     handleTextChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
 
     addRoutine = () => {
-        const { routineList, newRoutineName, showingAddRoutine } = this.state;
+        const { newRoutineName, showingAddRoutine } = this.state;
 
-        var localList = routineList;
-        localList.push(newRoutineName);
+        Meteor.subscribe('insertRoutine', newRoutineName, (err) => {
+            console.log(err.reason);
+        });
         this.setState({
             showingAddRoutine: !showingAddRoutine,
-            routineList: localList,
             newRoutineName: '',
         });
     }
@@ -109,17 +95,13 @@ class RoutineList extends Component {
     render() {
 
         const { showingAddRoutine, routineList } = this.state;
+        const { navigate } = this.props.navigation;
 
-        const static_list = 
-            [
-                'Routine 1',
-                'Routine 2',
-                'Routine 3',
-                'Routine 4',
-            ];
+        if(!this.props.currentUser) {
+            return <React.Fragment></React.Fragment>
+        }
 
         return (
-            
             <Container style={styles.container}>
             
                 {this.renderAddRoutine()}
@@ -134,35 +116,32 @@ class RoutineList extends Component {
                     <Icon type="MaterialIcons" name="playlist-add" size={24} style={styles.addIcon} onPress={() => {this.setState({showingAddRoutine: !showingAddRoutine})}}/>
                  
                 </Header>
-                {/* <Header>
-                    <Left>
-                        <Icon type="Ionicons" name="ios-add" color="blue"></Icon>
-                    </Left>
-                    <Body>
-                        <Title>My Routines</Title>
-                    </Body>
-                    <Right>
-                    <Icon type="SimpleLineIcons" name="user" size={24} color="green" />
-                    </Right>
-                </Header> */}
                 <Content>
                     <List>
-                    {routineList.map((routine, i) => (
-                        <ListItem key={i} onPress={() => {this.props.navigation.navigate('Routine')}}>
+                    {this.props.currentUser.profile.routines.map((routine, i) => (
+                        <ListItem key={i} onPress={() => {navigate('Routine', {routineName: ''})}}>
                             <Left>  
-                                <Text style={styles.text}>{routine}</Text>
+                                <Text style={styles.text}>{routine.name}</Text>
                             </Left>
                             <Right>
                                 <Icon name="arrow-forward" style={styles.arrowIcon}/>
                             </Right>
                         </ListItem>
-                    ))}
-                                    
+                    ))}          
                     </List>
                 </Content>
+                <StatusBar
+                barStyle="light-content"
+                />
             </Container>
         );
     }
 }
 
-export default RoutineList;
+export default withTracker( () => {
+    //Meteor.subscribe('insertRoutine');
+    return {
+        currentUser: Meteor.user(),
+        isLoggingIn: Meteor.loggingIn()
+    }
+})(RoutineList);

@@ -1,5 +1,8 @@
 import React from 'react';
 import Alert from 'react-native';
+import Meteor, { withTracker } from 'react-native-meteor';
+
+import configuration from './config';
 
 import getTheme from './native-base-theme/components';
 import variables from "./native-base-theme/variables/commonColor";
@@ -7,14 +10,22 @@ import { StyleProvider } from 'native-base';
 import Router from './src/Routing/Router';
 
 
-export default class App extends React.Component {
+class App extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             
         }
+        this.data = {}
     }
+
+    
+
+    componentWillMount() {
+        Meteor.connect(configuration.apiUrl)
+    }
+
     render() {
         return (
             <StyleProvider style={getTheme(variables)}>
@@ -24,3 +35,8 @@ export default class App extends React.Component {
     }
 }
 
+export default withTracker( () => {
+    return {
+        currentUser: Meteor.user(),
+    }
+})(App);
