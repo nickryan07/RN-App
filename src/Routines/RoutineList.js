@@ -56,8 +56,8 @@ class RoutineList extends Component {
     addRoutine = () => {
         const { newRoutineName, showingAddRoutine } = this.state;
 
-        Meteor.subscribe('insertRoutine', newRoutineName, (err) => {
-            console.log(err.reason);
+        Meteor.call('insertRoutine', newRoutineName, (err) => {
+            //console.log(err);
         });
         this.setState({
             showingAddRoutine: !showingAddRoutine,
