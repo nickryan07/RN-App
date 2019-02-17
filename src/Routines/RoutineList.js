@@ -4,7 +4,7 @@ import Meteor, { withTracker } from 'react-native-meteor';
 import { withNavigation } from 'react-navigation';
 
 import { List, Icon, Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right } from 'native-base';
-import { alertUnfinished } from '../Constants';
+import { alertUnfinished, alertAPI } from '../Constants';
 
 import Dialog from 'react-native-dialog';
 
@@ -42,7 +42,6 @@ class RoutineList extends Component {
         super(props);
 
         this.state = {
-            routineList: [],
             hidePassword: true,
             showingAddRoutine: false,
             newRoutineName: '',
@@ -55,13 +54,13 @@ class RoutineList extends Component {
     }
 
     addRoutine = () => {
-        const { routineList, newRoutineName, showingAddRoutine } = this.state;
+        const { newRoutineName, showingAddRoutine } = this.state;
 
-        var localList = routineList;
-        localList.push(newRoutineName);
+        Meteor.subscribe('insertRoutine', newRoutineName, (err) => {
+            console.log(err.reason);
+        });
         this.setState({
             showingAddRoutine: !showingAddRoutine,
-            routineList: localList,
             newRoutineName: '',
         });
     }
@@ -98,6 +97,10 @@ class RoutineList extends Component {
         const { showingAddRoutine, routineList } = this.state;
         const { navigate } = this.props.navigation;
 
+        if(!this.props.currentUser) {
+            return <React.Fragment></React.Fragment>
+        }
+
         return (
             <Container style={styles.container}>
             
@@ -115,21 +118,10 @@ class RoutineList extends Component {
                 </Header>
                 <Content>
                     <List>
-                    {routineList.map((routine, i) => (
+                    {this.props.currentUser.profile.routines.map((routine, i) => (
                         <ListItem key={i} onPress={() => {navigate('Routine', {routineName: ''})}}>
                             <Left>  
-                                <Text style={styles.text}>{routine}</Text>
-                            </Left>
-                            <Right>
-                                <Icon name="arrow-forward" style={styles.arrowIcon}/>
-                            </Right>
-                        </ListItem>
-                    ))}
-                    {   
-                        Meteor.collection('users').find({}).map((user, i) => (
-                        <ListItem key={i} onPress={() => {navigate('Routine', {routineName: ''})}}>
-                            <Left>  
-                                <Text style={styles.text}>{user.username}</Text>
+                                <Text style={styles.text}>{routine.name}</Text>
                             </Left>
                             <Right>
                                 <Icon name="arrow-forward" style={styles.arrowIcon}/>
@@ -147,6 +139,7 @@ class RoutineList extends Component {
 }
 
 export default withTracker( () => {
+    //Meteor.subscribe('insertRoutine');
     return {
         currentUser: Meteor.user(),
         isLoggingIn: Meteor.loggingIn()

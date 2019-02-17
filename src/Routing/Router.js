@@ -35,6 +35,9 @@ const RouteStack = createStackNavigator({
             headerRight: (
                 <Icon type="SimpleLineIcons" name="user" size={24} style={styles.userIcon} onPress={() => {navigation.navigate('Profile')}}/>
             ),
+            headerLeft: (
+                null
+            ),
             mode: 'modal',
             headerStyle: {
                 backgroundColor:  '#2D2D34',
