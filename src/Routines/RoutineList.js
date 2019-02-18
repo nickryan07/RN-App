@@ -7,6 +7,7 @@ import { List, Icon, Container, Header, Tab, Tabs, Form, Text, Input, Item, Labe
 import { alertUnfinished, alertAPI } from '../Constants';
 
 import Dialog from 'react-native-dialog';
+import { PulseIndicator } from 'react-native-indicators';
 
 const styles = StyleSheet.create({
     container: {
@@ -92,14 +93,19 @@ class RoutineList extends Component {
         );
     }
 
+    userLoaded = () => {
+        if(!this.props.currentUser) {
+            return false;
+        }
+        return true;
+    }
+
     render() {
 
         const { showingAddRoutine, routineList } = this.state;
         const { navigate } = this.props.navigation;
 
-        if(!this.props.currentUser) {
-            return <React.Fragment></React.Fragment>
-        }
+        
 
         return (
             <Container style={styles.container}>
@@ -117,6 +123,7 @@ class RoutineList extends Component {
                  
                 </Header>
                 <Content>
+                    {this.props.currentUser ? 
                     <List>
                     {this.props.currentUser.profile.routines.map((routine, i) => (
                         <ListItem key={i} onPress={() => {navigate('Routine', {routineName: ''})}}>
@@ -129,6 +136,7 @@ class RoutineList extends Component {
                         </ListItem>
                     ))}          
                     </List>
+                    : <PulseIndicator color="#21CE99" />}
                 </Content>
                 <StatusBar
                 barStyle="light-content"

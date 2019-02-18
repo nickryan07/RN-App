@@ -9,6 +9,8 @@ import CardView from 'react-native-cardview';
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#2D2D34',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     userIcon: {
         color: "#21CE99",

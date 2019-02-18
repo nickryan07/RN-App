@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar } from 'react-native';
-import Meteor, { withTracker } from 'react-native-meteor';
+import Meteor, { withTracker, Tracker } from 'react-native-meteor';
 
 import { Container, H2, Icon, Form, Text, Input, Item, Content, Button, ListItem, Left, Right } from 'native-base';
 
@@ -62,10 +62,25 @@ class Homepage extends Component {
     }
 
     isLoggingIn = () => {
-        console.log(this.props.isLoggingIn);
-        if(this.props.isLoggingIn) {
-            this.props.navigation.navigate('RoutineList');
-        }
+        // console.log(this.props.isLoggingIn);
+        // if(this.props.isLoggingIn) {
+        //     if()
+        //     this.props.navigation.navigate('RoutineList');
+        // }
+
+        Tracker.autorun(() => {
+            if (this.props.isLoggingIn) {
+                console.log(this.props.isLoggingIn);
+                if (this.props.currentUser) {
+                // use profile
+                    console.log(this.props.currentUser);
+                    this.props.navigation.navigate('RoutineList');
+                }
+            }
+        }, (err) => {
+            if(err)
+                console.log(err)
+        });
     }
 
     componentWillMount() {
@@ -117,6 +132,7 @@ class Homepage extends Component {
                 />
                 <Content padder style={styles.bgColor}>
                     <CardView style={styles.cardStyle} cardElevation={12} cardMaxElevation={12} cornerRadius={15} cornerOverlap={false}>
+                        
                         <H2 style={styles.loginTitle}>
                             Sign In
                         </H2>
@@ -186,6 +202,7 @@ class Homepage extends Component {
 
 export default withTracker( () => {
     return {
+        userId: Meteor.userId(),
         currentUser: Meteor.user(),
         isLoggingIn: Meteor.loggingIn()
     }

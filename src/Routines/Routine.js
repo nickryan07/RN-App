@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, StatusBar, Dimensions } from 'react-native';
+import { StyleSheet, StatusBar, Dimensions, TouchableHighlight } from 'react-native';
 
 import { PropTypes } from 'prop-types';
-import { Container, Icon, Content, H2 } from 'native-base';
+import { Container, Icon, Content, H2, Text } from 'native-base';
 import { LineChart } from 'react-native-chart-kit';
 import CardView from 'react-native-cardview';
 

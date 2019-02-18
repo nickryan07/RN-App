@@ -17,6 +17,7 @@
     "react-native-cardview": "^2.0.2",
     "react-native-chart-kit": "^2.0.1",
     "react-native-dialog": "^5.5.0",
+    "react-native-indicators": "^0.13.0",
     "react-native-meteor": "^1.4.0",
     "react-navigation": "^3.1.2",
     "react-swipeable-views-native": "^0.13.2"
