@@ -6,7 +6,7 @@ import { Container, H2, Icon, Form, Text, Input, Item, Content, Button, ListItem
 
 import CardView from 'react-native-cardview';
 import { Switch } from 'react-native-base-switch';
-import { alertAPI, alertUnfinished } from '../Constants';
+import { alertAPI, alertUnfinished } from '../../Constants';
 
 const styles = StyleSheet.create({
     screenContainer: {

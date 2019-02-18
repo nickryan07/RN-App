@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import Homepage from '../Login/Homepage';
-import CreateAccount from '../Login/CreateAccount';
-import Profile from '../Users/Profile';
-import RoutineList from '../Routines/RoutineList';
-import Routine from '../Routines/Routine';
+import Homepage from '../Screens/Login/Homepage';
+import CreateAccount from '../Screens/Login/CreateAccount';
+import Profile from '../Screens/Users/Profile';
+import RoutineList from '../Screens/Routines/RoutineList';
+import Routine from '../Screens/Routines/Routine';
 
 import { Icon } from 'native-base';
 
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 });
 
 const RouteStack = createStackNavigator({
-    Homepage: { 
+    Homepage: {
         screen: Homepage 
     },
     CreateAccount: {

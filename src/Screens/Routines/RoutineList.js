@@ -4,7 +4,7 @@ import Meteor, { withTracker } from 'react-native-meteor';
 import { withNavigation } from 'react-navigation';
 
 import { List, Icon, Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right } from 'native-base';
-import { alertUnfinished, alertAPI } from '../Constants';
+import { alertUnfinished, alertAPI } from '../../Constants';
 
 import Dialog from 'react-native-dialog';
 import { PulseIndicator } from 'react-native-indicators';
@@ -46,6 +46,7 @@ class RoutineList extends Component {
             hidePassword: true,
             showingAddRoutine: false,
             newRoutineName: '',
+            searchText: '',
         }
     
     }
@@ -102,7 +103,7 @@ class RoutineList extends Component {
 
     render() {
 
-        const { showingAddRoutine, routineList } = this.state;
+        const { showingAddRoutine, routineList, searchText } = this.state;
         const { navigate } = this.props.navigation;
 
         
@@ -115,7 +116,7 @@ class RoutineList extends Component {
                     <Item>
                         <Icon name="ios-search" />
                         <Input
-                            onChangeText={() => {}} // <-- Here
+                            onChangeText={(searchText) => this.setState({searchText})} // <-- Here
                             placeholder="Search"
                         />
                     </Item>
@@ -125,7 +126,9 @@ class RoutineList extends Component {
                 <Content>
                     {this.props.currentUser ? 
                     <List>
-                    {this.props.currentUser.profile.routines.map((routine, i) => (
+                    {this.props.currentUser.profile.routines.filter((routine) => {
+                        return routine.name.toLowerCase().includes(searchText.toLowerCase());
+                    }).map((routine, i) => (
                         <ListItem key={i} onPress={() => {navigate('Routine', {routineName: ''})}}>
                             <Left>  
                                 <Text style={styles.text}>{routine.name}</Text>

@@ -6,7 +6,7 @@ import { Container, Icon, Content, H2, Text } from 'native-base';
 import { LineChart } from 'react-native-chart-kit';
 import CardView from 'react-native-cardview';
 
-import { alertUnfinished } from '../Constants';
+import { alertUnfinished } from '../../Constants';
 
 const styles = StyleSheet.create({
     container: {

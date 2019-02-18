@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, StatusBar } from 'react-native';
 
 import { Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right, Icon } from 'native-base';
-import { alertAPI } from '../Constants';
+import { alertAPI } from '../../Constants';
 import Meteor from 'react-native-meteor';
 import CardView from 'react-native-cardview';
 
