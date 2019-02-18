@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar } from 'react-native';
-import Meteor, { withTracker, Tracker } from 'react-native-meteor';
+import Meteor, { withTracker, Tracker , Accounts} from 'react-native-meteor';
 
 import { Container, H2, Icon, Form, Text, Input, Item, Content, Button, ListItem, Left, Right } from 'native-base';
 
 import CardView from 'react-native-cardview';
 import { Switch } from 'react-native-base-switch';
 import { alertAPI, alertUnfinished } from '../../Constants';
+import { PulseIndicator } from 'react-native-indicators';
 
 const styles = StyleSheet.create({
     screenContainer: {
@@ -62,30 +63,18 @@ class Homepage extends Component {
     }
 
     isLoggingIn = () => {
-        // console.log(this.props.isLoggingIn);
-        // if(this.props.isLoggingIn) {
-        //     if()
-        //     this.props.navigation.navigate('RoutineList');
-        // }
-
-        Tracker.autorun(() => {
-            if (this.props.isLoggingIn) {
-                console.log(this.props.isLoggingIn);
-                if (this.props.currentUser) {
-                // use profile
-                    console.log(this.props.currentUser);
-                    this.props.navigation.navigate('RoutineList');
-                }
-            }
-        }, (err) => {
-            if(err)
-                console.log(err)
+        Accounts.onLogin((res) => {
+            this.props.navigation.navigate('RoutineList');
+        });
+        Accounts.onLoginFailure((err) => {
+            alertAPI(err);
         });
     }
 
     componentWillMount() {
         this.loadFonts();
         this.setState({fontsLoaded: true});
+        
     }
 
     componentDidMount() {
@@ -132,7 +121,8 @@ class Homepage extends Component {
                 />
                 <Content padder style={styles.bgColor}>
                     <CardView style={styles.cardStyle} cardElevation={12} cardMaxElevation={12} cornerRadius={15} cornerOverlap={false}>
-                        
+                    {this.props.isLoggingIn ? <PulseIndicator color="#21CE99" /> :
+                    <Content>
                         <H2 style={styles.loginTitle}>
                             Sign In
                         </H2>
@@ -176,6 +166,8 @@ class Homepage extends Component {
                                 Login
                             </Text>
                         </Button>
+                        </Content>
+                    }
                     </CardView>
                 </Content>
             </Container>
@@ -193,6 +185,7 @@ class Homepage extends Component {
 
             <Container style={styles.screenContainer}>
                 <Content>
+
                     {this.renderLoginForm()}
                 </Content>
             </Container>
