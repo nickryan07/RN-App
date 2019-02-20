@@ -25,8 +25,6 @@ const styles = StyleSheet.create({
 class Routine extends Component {
     constructor(props) {
         super(props);
-        this.navigate = this.props.navigation.navigate;
-        this.params = this.props.navigation.state.params;
 
         this.state = {
 
@@ -36,7 +34,7 @@ class Routine extends Component {
     static navigationOptions = {
         title: ``,
         headerRight: (
-            <Icon type="MaterialCommunityIcons" name="square-edit-outline" size={8} style={styles.editIcon} onPress={() => {alertUnfinished()}}/>
+            <Icon type="MaterialCommunityIcons" name="square-edit-outline" size={8} style={styles.editIcon} onPress={() => {alertUnfinished()}}></Icon>
         ),
         mode: 'modal',
         headerStyle: {

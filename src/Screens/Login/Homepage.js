@@ -81,15 +81,6 @@ class Homepage extends Component {
         this.isLoggingIn();
     }
 
-    alertForgot = () => {
-        // Works on both iOS and Android
-        Alert.alert(
-            'In Progress',
-            'Unfinished feature.',
-            {cancelable: false},
-        );
-    }
-
     handleUserChange = (text) => {
         this.setState({userString: text})
     }
@@ -115,10 +106,6 @@ class Homepage extends Component {
     renderLoginForm = () => {
         const { hidePassword } = this.state;
         return (
-            <Container style={styles.screenContainer}>
-                <StatusBar
-                barStyle="light-content"
-                />
                 <Content padder style={styles.bgColor}>
                     <CardView style={styles.cardStyle} cardElevation={12} cardMaxElevation={12} cornerRadius={15} cornerOverlap={false}>
                     {this.props.isLoggingIn ? <PulseIndicator color="#21CE99" /> :
@@ -170,7 +157,6 @@ class Homepage extends Component {
                     }
                     </CardView>
                 </Content>
-            </Container>
         );
     }
 
@@ -188,6 +174,9 @@ class Homepage extends Component {
 
                     {this.renderLoginForm()}
                 </Content>
+                <StatusBar
+                barStyle="light-content"
+                />
             </Container>
         );
     }

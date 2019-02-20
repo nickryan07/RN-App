@@ -71,16 +71,8 @@ class RoutineList extends Component {
         const { showingAddRoutine } = this.state;
         
 
-        /*const blurComponentIOS = (
-            <BlurView
-                style={StyleSheet.absoluteFill}
-                blurType="xlight"
-                blurAmount={50}
-            />
-        );*/
-
         return (
-            <Dialog.Container /*blurComponentIOS={blurComponentIOS}*/ visible={showingAddRoutine}>
+            <Dialog.Container visible={showingAddRoutine}>
                 <Dialog.Title>
                     Add Routine
                 </Dialog.Title>
@@ -150,7 +142,6 @@ class RoutineList extends Component {
 }
 
 export default withTracker( () => {
-    //Meteor.subscribe('insertRoutine');
     return {
         currentUser: Meteor.user(),
         isLoggingIn: Meteor.loggingIn()
