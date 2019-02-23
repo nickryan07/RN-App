@@ -24,26 +24,9 @@ const RouteStack = createStackNavigator({
     },
     CreateAccount: {
         screen: CreateAccount,
-        navigationOptions: {
-            mode: 'modal',
-            headerStyle: {
-                backgroundColor:  '#21CE99',
-                
-                shadowColor: 'transparent',
-                elevation: 0,
-                borderBottomWidth: 0,
-            },
-            headerLeftContainerStyle: {
-                color: '#fff',
-            },
-            headerTintColor: 'white',
-            shadowRadius: 0,
-            shadowOffset: {
-                height: 0,
-            },
-            
-            /* No more header config here! */
-        }
+        navigationOptions: ({ navigation }) => ({
+            headerTintColor: '#fff',
+        }),
     },
     Profile: { 
         screen: Profile 

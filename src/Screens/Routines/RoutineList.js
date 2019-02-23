@@ -51,6 +51,10 @@ class RoutineList extends Component {
     
     }
 
+    componentDidMount() {
+        //console.log(this.props.currentUser);
+    }
+
     handleTextChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
@@ -69,7 +73,6 @@ class RoutineList extends Component {
 
     renderAddRoutine = () => {
         const { showingAddRoutine } = this.state;
-        
 
         return (
             <Dialog.Container visible={showingAddRoutine}>
@@ -84,13 +87,6 @@ class RoutineList extends Component {
                 <Dialog.Button label="Add" onPress={() => {this.addRoutine()}}/>
             </Dialog.Container>
         );
-    }
-
-    userLoaded = () => {
-        if(!this.props.currentUser) {
-            return false;
-        }
-        return true;
     }
 
     render() {
@@ -143,6 +139,7 @@ class RoutineList extends Component {
 
 export default withTracker( () => {
     return {
+        userId: Meteor.userId(),
         currentUser: Meteor.user(),
         isLoggingIn: Meteor.loggingIn()
     }

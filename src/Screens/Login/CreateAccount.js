@@ -48,6 +48,12 @@ class CreateAccount extends Component {
         }
     }
 
+    componentDidMount() {
+        Accounts.onLogin((res) => {
+            this.props.navigation.navigate('Homepage');
+        });
+    }
+
     addUser = () => {
         const { email, username, password } = this.state;
 
@@ -57,11 +63,12 @@ class CreateAccount extends Component {
             password: password,
         }
 
-        //console.log(data);
-
         Accounts.createUser(data, (error) => {
             if(error) {
                 alertAPI(error.reason);
+            } else {
+                //alertAPI('Success');
+
             }
             // } else {
             //     alertAPI('Success');
