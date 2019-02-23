@@ -49,9 +49,7 @@ class CreateAccount extends Component {
     }
 
     componentDidMount() {
-        Accounts.onLogin((res) => {
-            this.props.navigation.navigate('Homepage');
-        });
+        
     }
 
     addUser = () => {
@@ -67,8 +65,8 @@ class CreateAccount extends Component {
             if(error) {
                 alertAPI(error.reason);
             } else {
-                //alertAPI('Success');
-
+                alertAPI('Success');
+                
             }
             // } else {
             //     alertAPI('Success');

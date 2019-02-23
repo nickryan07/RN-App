@@ -3,7 +3,7 @@ import { StyleSheet, Alert, StatusBar } from 'react-native';
 import Meteor, { withTracker } from 'react-native-meteor';
 import { withNavigation } from 'react-navigation';
 
-import { List, Icon, Container, Header, Tab, Tabs, Form, Text, Input, Item, Label, Content, Title, Body, Button, CheckBox, ListItem, Left, Right } from 'native-base';
+import { List, Icon, Container, Header, Text, Input, Item, Content, Badge, ListItem, Left, Right, ActionSheet } from 'native-base';
 import { alertUnfinished, alertAPI } from '../../Constants';
 
 import Dialog from 'react-native-dialog';
@@ -28,6 +28,9 @@ const styles = StyleSheet.create({
     arrowIcon: {
         color: "#21CE99",
     },
+    removeIcon: {
+        color: "#ED1727",
+    },
     addIcon: {
         color: "#21CE99",
         marginRight: 10,
@@ -47,6 +50,7 @@ class RoutineList extends Component {
             showingAddRoutine: false,
             newRoutineName: '',
             searchText: '',
+            isRemoving: false,
         }
     
     }
@@ -57,6 +61,17 @@ class RoutineList extends Component {
 
     handleTextChange = e => {
         this.setState({ [e.target.id]: e.target.value });
+    }
+
+    removeRoutine = (routineToRemove) => {
+        //console.log(routineToRemove._id);
+        if(routineToRemove === null) {
+            return;
+        }
+        Meteor.call('removeRoutine', routineToRemove.name, (err) => {
+            //console.log(err);
+        });
+        this.setState({isRemoving: false});
     }
 
     addRoutine = () => {
@@ -89,12 +104,30 @@ class RoutineList extends Component {
         );
     }
 
+
+    showActionSheet = () => {
+        ActionSheet.show(
+            {
+              options: BUTTONS,
+              cancelButtonIndex: CANCEL_INDEX,
+              destructiveButtonIndex: DESTRUCTIVE_INDEX,
+              title: "Testing ActionSheet"
+            },
+            buttonIndex => {
+              this.setState({ clicked: BUTTONS[buttonIndex] });
+            }
+        );
+    }
+
     render() {
 
-        const { showingAddRoutine, routineList, searchText } = this.state;
+        const { showingAddRoutine, isRemoving, searchText } = this.state;
         const { navigate } = this.props.navigation;
 
         
+        const BUTTONS = ["Add Routine", "Delete Routines", "Cancel"];
+        const DESTRUCTIVE_INDEX = 1;
+        const CANCEL_INDEX = 2;
 
         return (
             <Container style={styles.container}>
@@ -108,7 +141,27 @@ class RoutineList extends Component {
                             placeholder="Search"
                         />
                     </Item>
-                    <Icon type="MaterialIcons" name="playlist-add" size={24} style={styles.addIcon} onPress={() => {this.setState({showingAddRoutine: !showingAddRoutine})}}/>
+                    <Icon type="MaterialIcons" name="playlist-add" size={24} style={styles.addIcon} onPress={() => 
+                        ActionSheet.show(
+                            {
+                                options: BUTTONS,
+                                cancelButtonIndex: CANCEL_INDEX,
+                                destructiveButtonIndex: DESTRUCTIVE_INDEX,
+                                title: "Edit Your Routines"
+                            },
+                            buttonIndex => {
+                                switch(buttonIndex) {
+                                    case 0:
+                                        this.setState({ showingAddRoutine: !showingAddRoutine });
+                                        break;
+                                    case 1:
+                                        this.setState({ isRemoving: !isRemoving });
+                                        break;
+                                }
+                                
+                            }
+                        )
+                    }/>
                  
                 </Header>
                 <Content>
@@ -117,12 +170,18 @@ class RoutineList extends Component {
                     {this.props.currentUser.profile.routines.filter((routine) => {
                         return routine.name.toLowerCase().includes(searchText.toLowerCase());
                     }).map((routine, i) => (
-                        <ListItem key={i} onPress={() => {navigate('Routine', {routineName: ''})}}>
-                            <Left>  
+                        <ListItem key={i} onPress={() => {
+                                this.state.isRemoving ? this.removeRoutine(routine) :
+                                    navigate('Routine', {routineName: ''})}
+                            }>
+                            <Left>
                                 <Text style={styles.text}>{routine.name}</Text>
                             </Left>
                             <Right>
+                                {this.state.isRemoving ? 
+                                <Icon type="Ionicons" name="ios-remove-circle" style={styles.removeIcon} /> :
                                 <Icon name="arrow-forward" style={styles.arrowIcon}/>
+                                }
                             </Right>
                         </ListItem>
                     ))}          

@@ -6,7 +6,7 @@ import configuration from './config';
 
 import getTheme from './native-base-theme/components';
 import variables from "./native-base-theme/variables/commonColor";
-import { StyleProvider } from 'native-base';
+import { StyleProvider, Root } from 'native-base';
 import Router from './src/Routing/Router';
 
 
@@ -28,9 +28,11 @@ class App extends React.Component {
 
     render() {
         return (
-            <StyleProvider style={getTheme(variables)}>
-                <Router />
-            </StyleProvider>
+            <Root>
+                <StyleProvider style={getTheme(variables)}>
+                    <Router />
+                </StyleProvider>
+            </Root>
         );
     }
 }
