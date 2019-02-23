@@ -23,7 +23,10 @@ const RouteStack = createStackNavigator({
         screen: Homepage 
     },
     CreateAccount: {
-        screen: CreateAccount 
+        screen: CreateAccount,
+        navigationOptions: ({ navigation }) => ({
+            headerTintColor: '#fff',
+        }),
     },
     Profile: { 
         screen: Profile 

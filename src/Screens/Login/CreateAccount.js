@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar } from 'react-native';
-import Meteor, { Accounts } from 'react-native-meteor';
+import Meteor, { Accounts, withTracker } from 'react-native-meteor';
 
 import { Container, H2, Icon, Form, Text, Input, Item, Content, Button, ListItem, Left, Right } from 'native-base';
 
@@ -48,26 +48,11 @@ class CreateAccount extends Component {
         }
     }
 
-    static navigationOptions = {
-        mode: 'modal',
-        headerStyle: {
-            backgroundColor:  '#21CE99',
-            
-            shadowColor: 'transparent',
-            elevation: 0,
-            borderBottomWidth: 0,
-        },
-        headerLeftContainerStyle: {
-            color: '#fff',
-        },
-        headerTintColor: 'white',
-        shadowRadius: 0,
-        shadowOffset: {
-            height: 0,
-        },
-        
-        /* No more header config here! */
-    };
+    componentDidMount() {
+        Accounts.onLogin((res) => {
+            this.props.navigation.navigate('Homepage');
+        });
+    }
 
     addUser = () => {
         const { email, username, password } = this.state;
@@ -78,29 +63,14 @@ class CreateAccount extends Component {
             password: password,
         }
 
-        console.log(data);
-
         Accounts.createUser(data, (error) => {
             if(error) {
                 alertAPI(error.reason);
             } else {
-                alertAPI('Success');
+                //alertAPI('Success');
+
             }
         });
-        
-        // Meteor.call('addUser', data, (err, result) => {
-        //     if (err) {
-        //         console.log(err)
-        //         this.alertAPI(err);
-        //     } else {
-        //         this.setState({
-        //             email: '',
-        //             username: '',
-        //             password: '',
-        //         })
-        //         this.alertAPI('Success');
-        //     }
-        // })
     }
 
     handleEmailChange = (text) => {
@@ -171,4 +141,10 @@ class CreateAccount extends Component {
     }
 }
 
-export default CreateAccount;
+export default withTracker( () => {
+    return {
+        userId: Meteor.userId(),
+        currentUser: Meteor.user(),
+        isLoggingIn: Meteor.loggingIn()
+    }
+})(CreateAccount);

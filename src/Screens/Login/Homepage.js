@@ -64,30 +64,19 @@ class Homepage extends Component {
 
     isLoggingIn = () => {
         Accounts.onLogin((res) => {
-            this.props.navigation.navigate('RoutineList');
+            if(Meteor.userId()) {
+                this.props.navigation.navigate('RoutineList');
+            }
         });
-        Accounts.onLoginFailure((err) => {
-            alertAPI(err);
-        });
+        // Accounts.onLoginFailure((err) => {
+        //      alertAPI(err);
+        // });
     }
 
     componentWillMount() {
         this.loadFonts();
         this.setState({fontsLoaded: true});
-        
-    }
-
-    componentDidMount() {
         this.isLoggingIn();
-    }
-
-    alertForgot = () => {
-        // Works on both iOS and Android
-        Alert.alert(
-            'In Progress',
-            'Unfinished feature.',
-            {cancelable: false},
-        );
     }
 
     handleUserChange = (text) => {
@@ -104,12 +93,8 @@ class Homepage extends Component {
         Meteor.loginWithPassword(userString, password, (error) => {
             if(error) {
                 alertAPI(error.reason);
-            } else {
-                //alertUnfinished();
-                //console.log(Meteor.user());
-                this.props.navigation.navigate('RoutineList');
             }
-        })
+        });
     }
 
     renderLoginForm = () => {
