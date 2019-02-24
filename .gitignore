@@ -8,3 +8,5 @@ npm-debug.*
 .DS_Store
 src/.DS_Store
 config.json
+assets/icon copy.png
+assets/iconold2.png

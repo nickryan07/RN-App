@@ -68,7 +68,7 @@ class RoutineList extends Component {
         if(routineToRemove === null) {
             return;
         }
-        Meteor.call('removeRoutine', routineToRemove.name, (err) => {
+        Meteor.call('removeRoutine', routineToRemove._id, (err) => {
             //console.log(err);
         });
         this.setState({isRemoving: false});
