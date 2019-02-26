@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, Alert, StatusBar } from 'react-native';
+import { StyleSheet, Alert, StatusBar, ListView } from 'react-native';
 import Meteor, { withTracker } from 'react-native-meteor';
 import { withNavigation } from 'react-navigation';
 
-import { List, Icon, Container, Header, Text, Input, Item, Content, Badge, ListItem, Left, Right, ActionSheet } from 'native-base';
+import { List, Icon, Container, Header, Text, Input, Item, Content, Button, ListItem, Left, Right, ActionSheet } from 'native-base';
 import { alertUnfinished, alertAPI } from '../../Constants';
 
 import Dialog from 'react-native-dialog';
@@ -20,6 +20,9 @@ const styles = StyleSheet.create({
     listHeader: {
         backgroundColor: '#2D2D34',
         paddingBottom: 10,
+    },
+    listItem: {
+        backgroundColor: '#2D2D34',
     },
     userIcon: {
         color: "#21CE99",
@@ -44,13 +47,14 @@ const styles = StyleSheet.create({
 class RoutineList extends Component {
     constructor(props) {
         super(props);
-
+        this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
             hidePassword: true,
             showingAddRoutine: false,
             newRoutineName: '',
             searchText: '',
             isRemoving: false,
+            routines: props.currentUser ? props.currentUser.profile.routines : [],
         }
     
     }
@@ -63,15 +67,38 @@ class RoutineList extends Component {
         this.setState({ [e.target.id]: e.target.value });
     }
 
-    removeRoutine = (routineToRemove) => {
-        //console.log(routineToRemove._id);
-        if(routineToRemove === null) {
-            return;
-        }
-        Meteor.call('removeRoutine', routineToRemove._id, (err) => {
-            //console.log(err);
-        });
-        this.setState({isRemoving: false});
+    removeRoutine = (routineToRemove, secId, rowId, rowMap) => {
+        Alert.alert(
+            'Delete a Routine',
+            'Are you sure?',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => {
+                        if(routineToRemove === null) {
+                            return;
+                        }
+                        rowMap[`${secId}${rowId}`].props.closeRow();
+                        return;
+                    },
+                    style: 'cancel',
+                },
+                {
+                    text: 'Delete',
+                    onPress: () => {
+                        if(routineToRemove === null) {
+                            return;
+                        }
+                        Meteor.call('removeRoutine', routineToRemove._id, (err) => {
+                            //console.log(err);
+                        });
+                        rowMap[`${secId}${rowId}`].props.closeRow();
+                    },
+                    style: 'destructive',
+                },
+            ],
+            {cancelable: false},
+        );
     }
 
     addRoutine = () => {
@@ -119,6 +146,15 @@ class RoutineList extends Component {
         );
     }
 
+    fetchRoutines = () => {
+        const { searchText } = this.state;
+        const routines = this.props.currentUser.profile.routines.filter((routine) => {
+            return routine.name.toLowerCase().includes(searchText.toLowerCase());
+        });
+        console.log(routines);
+        return routines;
+    }
+
     render() {
 
         const { showingAddRoutine, isRemoving, searchText } = this.state;
@@ -128,7 +164,7 @@ class RoutineList extends Component {
         const BUTTONS = ["Add Routine", "Delete Routines", "Cancel"];
         const DESTRUCTIVE_INDEX = 1;
         const CANCEL_INDEX = 2;
-
+        const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         return (
             <Container style={styles.container}>
             
@@ -142,50 +178,34 @@ class RoutineList extends Component {
                         />
                     </Item>
                     <Icon type="MaterialIcons" name="playlist-add" size={24} style={styles.addIcon} onPress={() => 
-                        ActionSheet.show(
-                            {
-                                options: BUTTONS,
-                                cancelButtonIndex: CANCEL_INDEX,
-                                destructiveButtonIndex: DESTRUCTIVE_INDEX,
-                                title: "Edit Your Routines"
-                            },
-                            buttonIndex => {
-                                switch(buttonIndex) {
-                                    case 0:
-                                        this.setState({ showingAddRoutine: !showingAddRoutine });
-                                        break;
-                                    case 1:
-                                        this.setState({ isRemoving: !isRemoving });
-                                        break;
-                                }
-                                
-                            }
-                        )
+                        this.setState({ showingAddRoutine: !showingAddRoutine })
                     }/>
                  
                 </Header>
                 <Content>
                     {this.props.currentUser ? 
-                    <List>
-                    {this.props.currentUser.profile.routines.filter((routine) => {
-                        return routine.name.toLowerCase().includes(searchText.toLowerCase());
-                    }).map((routine, i) => (
-                        <ListItem key={i} onPress={() => {
-                                this.state.isRemoving ? this.removeRoutine(routine) :
-                                    navigate('Routine', {routineName: ''})}
-                            }>
+                    <List
+                        leftOpenValue={75}
+                        rightOpenValue={-75}
+                        dataSource={this.ds.cloneWithRows(this.props.currentUser.profile.routines)}
+                        renderRow={data =>
+                        <ListItem style={styles.listItem}>
                             <Left>
-                                <Text style={styles.text}>{routine.name}</Text>
+                                <Text style={styles.text}> {data.name} </Text>
                             </Left>
                             <Right>
-                                {this.state.isRemoving ? 
-                                <Icon type="Ionicons" name="ios-remove-circle" style={styles.removeIcon} /> :
                                 <Icon name="arrow-forward" style={styles.arrowIcon}/>
-                                }
                             </Right>
-                        </ListItem>
-                    ))}          
-                    </List>
+                        </ListItem>}
+                        renderLeftHiddenRow={data =>
+                        <Button full onPress={() => alert(data.name)}>
+                            <Icon active name="information-circle" />
+                        </Button>}
+                        renderRightHiddenRow={(data, secId, rowId, rowMap)=>
+                        <Button full danger onPress={() => {this.removeRoutine(data, secId, rowId, rowMap)}}/*_ => this.deleteRow(secId, rowId, rowMap)}*/>
+                            <Icon active name="trash" />
+                        </Button>}
+                    />
                     : <PulseIndicator color="#21CE99" />}
                 </Content>
                 <StatusBar
