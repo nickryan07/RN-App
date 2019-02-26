@@ -151,7 +151,6 @@ class RoutineList extends Component {
         const routines = this.props.currentUser.profile.routines.filter((routine) => {
             return routine.name.toLowerCase().includes(searchText.toLowerCase());
         });
-        console.log(routines);
         return routines;
     }
 
@@ -187,9 +186,9 @@ class RoutineList extends Component {
                     <List
                         leftOpenValue={75}
                         rightOpenValue={-75}
-                        dataSource={this.ds.cloneWithRows(this.props.currentUser.profile.routines)}
+                        dataSource={this.ds.cloneWithRows(this.fetchRoutines())}
                         renderRow={data =>
-                        <ListItem style={styles.listItem}>
+                        <ListItem style={styles.listItem} onPress={() => navigate('Routine', {routineName: ''})}>
                             <Left>
                                 <Text style={styles.text}> {data.name} </Text>
                             </Left>
