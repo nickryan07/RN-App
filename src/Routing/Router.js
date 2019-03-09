@@ -33,6 +33,7 @@ const RouteStack = createStackNavigator({
     },
     RoutineList: { 
         screen: RoutineList,
+        mode: 'modal',
         navigationOptions: ({ navigation }) => ({
             title: 'Routines',
             headerRight: (
@@ -41,7 +42,6 @@ const RouteStack = createStackNavigator({
             headerLeft: (
                 null
             ),
-            mode: 'modal',
             headerStyle: {
                 backgroundColor:  '#2D2D34',
                 elevation: 0,
@@ -55,7 +55,6 @@ const RouteStack = createStackNavigator({
     },
 }, {
     defaultNavigationOptions: {
-        mode: 'modal',
         headerStyle: {
             backgroundColor:  '#21CE99',
             shadowColor: 'transparent',
