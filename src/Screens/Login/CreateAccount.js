@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     bgColor: {
-        backgroundColor: '#21CE99',
+        backgroundColor: '#2D2D34',
     }
 });
 

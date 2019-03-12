@@ -46,7 +46,7 @@ class RoutineLog extends Component {
                         // Initially visible month. Default = Date()
                         // current={'2012-03-01'}
                         // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-                        minDate={'2010-05-10'}
+                        minDate={'2015-05-10'}
                         // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
                         maxDate={'2020-05-30'}
                         // Handler which gets executed on day press. Default = undefined
@@ -54,7 +54,10 @@ class RoutineLog extends Component {
                         // Handler which gets executed on day long press. Default = undefined
                         onDayLongPress={(day) => {console.log('selected day', day)}}
                         style={{
-                            width: Dimensions.get('window').width
+                            width: Dimensions.get('window').width,
+                            borderBottomWidth: 2,
+                            borderTopWidth: 2,
+                            borderColor: 'gray',
                         }}
                         theme={{
                             backgroundColor: '#2D2D34',

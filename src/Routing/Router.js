@@ -26,7 +26,10 @@ const styles = StyleSheet.create({
 
 const RouteStack = createStackNavigator({
     Homepage: {
-        screen: Homepage 
+        screen: Homepage,
+        // navigationOptions: ({navigation}) => ({
+        //     header: null,
+        // }),
     },
     CreateAccount: {
         screen: CreateAccount,

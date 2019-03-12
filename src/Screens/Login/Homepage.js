@@ -100,9 +100,10 @@ class Homepage extends Component {
     renderLoginForm = () => {
         const { hidePassword } = this.state;
         return (
+
                 <Content padder>
+                {this.props.isLoggingIn ? <PulseIndicator color="#21CE99" /> :
                     <CardView style={styles.cardStyle} cardElevation={12} cardMaxElevation={12} cornerRadius={15} cornerOverlap={false}>
-                    {this.props.isLoggingIn ? <PulseIndicator color="#21CE99" /> :
                     <Content>
                         <H2 style={styles.loginTitle}>
                             Sign In
@@ -148,8 +149,8 @@ class Homepage extends Component {
                             </Text>
                         </Button>
                         </Content>
-                    }
                     </CardView>
+                }
                 </Content>
         );
     }

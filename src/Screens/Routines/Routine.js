@@ -13,19 +13,18 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#2D2D34',
         flexGrow: 1,
+        justifyContent: 'center',
         alignItems: 'center',
     },
-    editIcon: {
-        color: "#21CE99",
-        marginRight: 10,
+    startText: {
+        color: 'gray',
+        alignSelf: 'center',
+        margin: 5,
+        textDecorationLine: 'underline',
     },
     cardStyle: {
         backgroundColor: 'white',
         margin: 20,
-    },
-    footerContainer: {
-        backgroundColor: '#2D2D34',
-        color: '#21CE99'
     },
 });
 class Routine extends Component {
@@ -39,9 +38,13 @@ class Routine extends Component {
     
     render() {
         return (
-            <Container style={styles.container}>
+            <Container style={styles.container} onPress={() => {alertUnfinished()}}>
                 <StatusBar barStyle="light-content"/>
+                    <Text style={styles.startText} onPress={() => {alertUnfinished()}}>
+                        Get Started
+                    </Text>
 
+                    <Icon type="Ionicons" name="md-add" style={styles.startText} onPress={() => {alertUnfinished()}}></Icon>
             </Container>
         );
     }
