@@ -17,7 +17,6 @@ class App extends React.Component {
         this.state = {
             
         }
-        this.data = {}
     }
 
     

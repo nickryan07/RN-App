@@ -27,22 +27,6 @@ class Profile extends Component {
         }
     }
 
-    static navigationOptions = ({navigation}) => ({
-        title: 'Profile',
-        headerRight: (
-            <Icon type="SimpleLineIcons" name="user" size={24} style={styles.userIcon} onPress={() => {navigation.navigate('Profile')}}/>
-        ),
-        mode: 'modal',
-        headerStyle: {
-            backgroundColor:  '#2D2D34',
-            elevation: 0,
-            borderBottomWidth: 0,
-        },
-        headerTintColor: '#21CE99',
-        
-        /* No more header config here! */
-    });
-
     handleSignOut = () => {
         const { userString, password } = this.state;
 

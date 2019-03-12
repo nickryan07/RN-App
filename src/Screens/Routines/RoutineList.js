@@ -188,7 +188,7 @@ class RoutineList extends Component {
                         rightOpenValue={-75}
                         dataSource={this.ds.cloneWithRows(this.fetchRoutines())}
                         renderRow={data =>
-                        <ListItem style={styles.listItem} onPress={() => navigate('Routine', {routineName: ''})}>
+                        <ListItem style={styles.listItem} onPress={() => navigate('Routine', {routineName: data.name})}>
                             <Left>
                                 <Text style={styles.text}> {data.name} </Text>
                             </Left>
