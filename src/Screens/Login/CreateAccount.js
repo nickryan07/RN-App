@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar } from 'react-native';
 import Meteor, { Accounts, withTracker } from 'react-native-meteor';
 
-import { Container, H2, Icon, Form, Text, Input, Item, Content, Button, ListItem, Left, Right } from 'native-base';
+import { Container, H2, Icon, Form, Text, Input, Item, Content, Button, ListItem, Left, Right, Card } from 'native-base';
 
 import PropTypes from 'prop-types';
 import CardView from 'react-native-cardview';
@@ -91,15 +91,11 @@ class CreateAccount extends Component {
 
         return (
             <Content padder style={styles.bgColor}>
-                <CardView 
+                <Card
                 style={{
                     backgroundColor: 'white',
                     margin: 20,
-                }}
-                cardElevation={12}
-                cardMaxElevation={12}
-                cornerRadius={15}
-                cornerOverlap={false}>
+                }}>
                     <H2 style={styles.loginTitle}>
                         Create an Account
                     </H2>
@@ -127,7 +123,7 @@ class CreateAccount extends Component {
                             Create Account
                         </Text>
                     </Button>
-                </CardView>
+                </Card>
             </Content>
         );
     }

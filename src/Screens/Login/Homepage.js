@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar } from 'react-native';
 import Meteor, { withTracker, Tracker , Accounts} from 'react-native-meteor';
 
-import { Container, H2, Icon, Form, Text, Input, Item, Content, Button, ListItem, Left, Right } from 'native-base';
+import { Container, H2, Icon, Form, Text, Input, Item, Content, Card, Button, ListItem, Left, Right } from 'native-base';
 
 import CardView from 'react-native-cardview';
 import { Switch } from 'react-native-base-switch';
@@ -103,7 +103,8 @@ class Homepage extends Component {
 
                 <Content padder>
                 {this.props.isLoggingIn ? <PulseIndicator color="#21CE99" /> :
-                    <CardView style={styles.cardStyle} cardElevation={12} cardMaxElevation={12} cornerRadius={15} cornerOverlap={false}>
+                    <Card style={styles.cardStyle} //cardElevation={12} cardMaxElevation={12} cornerRadius={15} cornerOverlap={false}
+                    >
                     <Content>
                         <H2 style={styles.loginTitle}>
                             Sign In
@@ -149,7 +150,7 @@ class Homepage extends Component {
                             </Text>
                         </Button>
                         </Content>
-                    </CardView>
+                    </Card>
                 }
                 </Content>
         );

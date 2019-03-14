@@ -42,6 +42,9 @@ const styles = StyleSheet.create({
     text: {
         color: "#fff",
     },
+    listStyle: {
+        marginLeft: 5
+    }
 });
 
 class RoutineList extends Component {
@@ -184,7 +187,7 @@ class RoutineList extends Component {
                 <Content>
                     {this.props.currentUser ? 
                     <List
-                        leftOpenValue={75}
+                        style={styles.listStyle}
                         rightOpenValue={-75}
                         dataSource={this.ds.cloneWithRows(this.fetchRoutines())}
                         renderRow={data =>
@@ -196,10 +199,6 @@ class RoutineList extends Component {
                                 <Icon name="arrow-forward" style={styles.arrowIcon}/>
                             </Right>
                         </ListItem>}
-                        renderLeftHiddenRow={data =>
-                        <Button full onPress={() => alert(data.name)}>
-                            <Icon active name="information-circle" />
-                        </Button>}
                         renderRightHiddenRow={(data, secId, rowId, rowMap)=>
                         <Button full danger onPress={() => {this.removeRoutine(data, secId, rowId, rowMap)}}/*_ => this.deleteRow(secId, rowId, rowMap)}*/>
                             <Icon active name="trash" />
