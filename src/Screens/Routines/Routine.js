@@ -3,7 +3,7 @@ import { StyleSheet, StatusBar, Dimensions, TouchableHighlight } from 'react-nat
 
 import Meteor, { withTracker } from 'react-native-meteor';
 
-import { Container, Icon, Content, H2, Text, Footer, FooterTab, Button, Picker } from 'native-base';
+import { Container, Icon, Content, H2, Text, Footer, FooterTab, Button, Picker, Form } from 'native-base';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
 import { alertUnfinished } from '../../Constants';
@@ -54,26 +54,30 @@ class Routine extends Component {
         return (
             <Container style={styles.container} onPress={() => {alertUnfinished()}}>
                 <StatusBar barStyle="light-content"/>
-                <Picker
-                mode="dropdown"
-                placeholder="Barbell"
-                iosIcon={<Icon name="arrow-down" style={styles.pickerIcon}/>}
-                headerStyle={{ backgroundColor: "#2D2D34" }}
-                headerBackButtonTextStyle={{ color: "#21CE99" }}
-                headerTitleStyle={{ color: "#21CE99" }}
-                selectedValue={this.state.selected}
-                itemTextStyle={{color: "#fff"}}
-                onValueChange={() => {}}
-                >
-                    {exercises.map((exercise, i) => {
-                        return <Picker.Item label={exercise.name} value={i} key={i}/>
-                    })}
-                </Picker>
+                <Form>
+                    
+                    <Picker
+                    mode="dialog"
+                    placeholder="Barbell"
+                    iosIcon={<Icon name="arrow-down" style={styles.pickerIcon}/>}
+                    headerStyle={{ backgroundColor: "#2D2D34" }}
+                    headerBackButtonTextStyle={{ color: "#21CE99" }}
+                    headerTitleStyle={{ color: "#21CE99" }}
+                    selectedValue={this.state.selected}
+                    itemTextStyle={{color: "#fff"}}
+                    onValueChange={() => {}}
+                    >
+                        {exercises.map((exercise, i) => {
+                            return <Picker.Item label={exercise.name} value={i} key={i}/>
+                        })}
+                    </Picker>
                     <Text style={styles.startText} onPress={() => {alertUnfinished()}}>
                         Get Started
                     </Text>
 
                     <Icon type="Ionicons" name="md-add" style={styles.startText} onPress={() => {alertUnfinished()}}></Icon>
+
+                </Form>
             </Container>
         );
     }
