@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar, ListView } from 'react-native';
 import Meteor, { withTracker } from 'react-native-meteor';
-import { withNavigation } from 'react-navigation';
 
-import { List, Icon, Container, Header, Text, Input, Item, Content, Button, ListItem, Left, Right, ActionSheet } from 'native-base';
-import { alertUnfinished, alertAPI } from '../../Constants';
+import { List, Icon, Container, Header, Text, Input, Item, Content, Button, ListItem, Left, Right } from 'native-base';
 
 import Dialog from 'react-native-dialog';
 import { PulseIndicator } from 'react-native-indicators';
@@ -23,6 +21,7 @@ const styles = StyleSheet.create({
     },
     listItem: {
         backgroundColor: '#2D2D34',
+        paddingLeft: 5,
     },
     userIcon: {
         color: "#21CE99",
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
         color: "#fff",
     },
     listStyle: {
-        marginLeft: 5
+        paddingLeft: 5
     }
 });
 
@@ -134,21 +133,6 @@ class RoutineList extends Component {
         );
     }
 
-
-    showActionSheet = () => {
-        ActionSheet.show(
-            {
-              options: BUTTONS,
-              cancelButtonIndex: CANCEL_INDEX,
-              destructiveButtonIndex: DESTRUCTIVE_INDEX,
-              title: "Testing ActionSheet"
-            },
-            buttonIndex => {
-              this.setState({ clicked: BUTTONS[buttonIndex] });
-            }
-        );
-    }
-
     fetchRoutines = () => {
         const { searchText } = this.state;
         const routines = this.props.currentUser.profile.routines.filter((routine) => {
@@ -175,8 +159,9 @@ class RoutineList extends Component {
                     <Item>
                         <Icon name="ios-search" />
                         <Input
-                            onChangeText={(searchText) => this.setState({searchText})} // <-- Here
+                            onChangeText={(searchText) => this.setState({searchText})}
                             placeholder="Search"
+                            keyboardAppearance="dark"
                         />
                     </Item>
                     <Icon type="MaterialIcons" name="playlist-add" size={24} style={styles.addIcon} onPress={() => 
@@ -184,10 +169,10 @@ class RoutineList extends Component {
                     }/>
                  
                 </Header>
-                <Content>
+                <Container scrollEnabled={false}>
                     {this.props.currentUser ? 
                     <List
-                        style={styles.listStyle}
+                        leftOpenValue={0}
                         rightOpenValue={-75}
                         dataSource={this.ds.cloneWithRows(this.fetchRoutines())}
                         renderRow={data =>
@@ -199,13 +184,14 @@ class RoutineList extends Component {
                                 <Icon name="arrow-forward" style={styles.arrowIcon}/>
                             </Right>
                         </ListItem>}
+                        disableRightSwipe
                         renderRightHiddenRow={(data, secId, rowId, rowMap)=>
                         <Button full danger onPress={() => {this.removeRoutine(data, secId, rowId, rowMap)}}/*_ => this.deleteRow(secId, rowId, rowMap)}*/>
                             <Icon active name="trash" />
                         </Button>}
                     />
                     : <PulseIndicator color="#21CE99" />}
-                </Content>
+                </Container>
                 <StatusBar
                 barStyle="light-content"
                 />
