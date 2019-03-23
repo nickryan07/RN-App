@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Alert, StatusBar } from 'react-native';
 import Meteor, { withTracker, Tracker , Accounts} from 'react-native-meteor';
 
-import { Container, H2, Icon, Form, Text, Input, Item, Content, Card, Button, ListItem, Left, Right } from 'native-base';
+import { Container, H2, Icon, Form, Text, Input, Item, Content, Card, Button, ListItem, Left, Right, Toast } from 'native-base';
 
 import CardView from 'react-native-cardview';
 import { Switch } from 'react-native-base-switch';
@@ -92,7 +92,13 @@ class Homepage extends Component {
 
         Meteor.loginWithPassword(userString, password, (error) => {
             if(error) {
-                alertAPI(error.reason);
+                //alertAPI(error.reason);
+                Toast.show({
+                    text: error.reason,
+                    buttonText: "Dismiss",
+                    duration: 3000,
+                    textStyle: { color: "#21CE99" },
+                });
             }
         });
     }
@@ -102,7 +108,6 @@ class Homepage extends Component {
         return (
 
                 <Content padder>
-                {this.props.isLoggingIn ? <PulseIndicator color="#21CE99" /> :
                     <Card style={styles.cardStyle} //cardElevation={12} cardMaxElevation={12} cornerRadius={15} cornerOverlap={false}
                     >
                     <Content>
@@ -141,6 +146,7 @@ class Homepage extends Component {
                                 </Right>
                             </ListItem>
                         </Form>
+                        {this.props.isLoggingIn ? <PulseIndicator color="#21CE99" /> :
                         <Button rounded onPress={() => {
                             this.handleSignIn()
                             //this.props.navigation.navigate('RoutineList')
@@ -149,9 +155,10 @@ class Homepage extends Component {
                                 Login
                             </Text>
                         </Button>
+
+                        }
                         </Content>
                     </Card>
-                }
                 </Content>
         );
     }

@@ -33,20 +33,7 @@ class Routine extends Component {
         super(props);
 
         this.state = {
-            type: 'Barbell',
-            exercises: [],
         }
-    }
-
-    componentDidMount() {
-        Meteor.call("getExercises", "Barbell", (err, res) => {
-            if(err) {
-                console.log(err);
-            } else {
-                //console.log(res);
-                this.setState({exercises: res});
-            }
-        })
     }
     
     render() {
@@ -55,27 +42,11 @@ class Routine extends Component {
             <Container style={styles.container} onPress={() => {alertUnfinished()}}>
                 <StatusBar barStyle="light-content"/>
                 <Form>
-                    
-                    <Picker
-                    mode="dialog"
-                    placeholder="Barbell"
-                    iosIcon={<Icon name="arrow-down" style={styles.pickerIcon}/>}
-                    headerStyle={{ backgroundColor: "#2D2D34" }}
-                    headerBackButtonTextStyle={{ color: "#21CE99" }}
-                    headerTitleStyle={{ color: "#21CE99" }}
-                    selectedValue={this.state.selected}
-                    itemTextStyle={{color: "#fff"}}
-                    onValueChange={() => {}}
-                    >
-                        {exercises.map((exercise, i) => {
-                            return <Picker.Item label={exercise.name} value={i} key={i}/>
-                        })}
-                    </Picker>
-                    <Text style={styles.startText} onPress={() => {alertUnfinished()}}>
+                    <Text style={styles.startText} onPress={() => {this.props.navigation.navigate('Exercises');}}>
                         Get Started
                     </Text>
 
-                    <Icon type="Ionicons" name="md-add" style={styles.startText} onPress={() => {alertUnfinished()}}></Icon>
+                    <Icon type="Ionicons" name="md-add" style={styles.startText} onPress={() => {this.props.navigation.navigate('Exercises');}}></Icon>
 
                 </Form>
             </Container>

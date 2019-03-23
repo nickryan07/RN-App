@@ -9,6 +9,7 @@ import RoutineList from '../Screens/Routines/RoutineList';
 import Routine from '../Screens/Routines/Routine';
 import RoutineStatistics from '../Screens/Routines/RoutineStatistics';
 import RoutineLog from '../Screens/Routines/RoutineLog';
+import Exercises from '../Screens/Routines/Exercises';
 
 import { Icon } from 'native-base';
 import variables from "../../native-base-theme/variables/commonColor";
@@ -60,53 +61,59 @@ const RouteStack = createStackNavigator({
             headerTintColor: variables.brandPrimary,
         }),
     },
+    
     Routine: {
-        screen: createBottomTabNavigator({
-            Home: {
-                screen: Routine,
-                navigationOptions: ({ navigation }) => ({
-                    title: 'Routine',
-                }),
-            },
-            Stats: {
-                screen: RoutineStatistics,
-                navigationOptions: ({navigation}) => ({
-                    title: 'Stats',
-                }),
-            },
-            Log: {
-                screen: RoutineLog,
-                navigationOptions: ({navigation}) => ({
-                    title: 'Log',
-                }),
-            }
-        },
-        {
-            defaultNavigationOptions: ({ navigation }) => ({
-                tabBarIcon: ({ focused, horizontal, tintColor }) => {
-                const { routeName } = navigation.state;
-                let iconName;
-                let iconType = 'Ionicons';
-                if (routeName === 'Home') {
-                    iconName = `dumbbell`;
-                    iconType= 'MaterialCommunityIcons';
-                } else if (routeName === 'Log') {
-                    iconName = `ios-options`;
-                } else {
-                    iconName = 'ios-stats';
+        screen: createStackNavigator({
+            RoutineScreen: createBottomTabNavigator({
+                Home: {
+                    screen: Routine,
+                    navigationOptions: ({ navigation }) => ({
+                        title: 'Routine',
+                    }),
+                },
+                Stats: {
+                    screen: RoutineStatistics,
+                    navigationOptions: ({navigation}) => ({
+                        title: 'Stats',
+                    }),
+                },
+                Log: {
+                    screen: RoutineLog,
+                    navigationOptions: ({navigation}) => ({
+                        title: 'Log',
+                    }),
                 }
-        
-                // You can return any component that you like here!
-                return <Icon type={iconType} name={iconName} size={25} style={styles.tabIcon} />;
+            },
+            {
+                defaultNavigationOptions: ({ navigation }) => ({
+                    tabBarIcon: ({ focused, horizontal, tintColor }) => {
+                    const { routeName } = navigation.state;
+                    let iconName;
+                    let iconType = 'Ionicons';
+                    if (routeName === 'Home') {
+                        iconName = `dumbbell`;
+                        iconType= 'MaterialCommunityIcons';
+                    } else if (routeName === 'Log') {
+                        iconName = `ios-options`;
+                    } else {
+                        iconName = 'ios-stats';
+                    }
+            
+                    // You can return any component that you like here!
+                    return <Icon type={iconType} name={iconName} size={25} style={styles.tabIcon} />;
+                    },
+                }),
+                tabBarOptions: {
+                    activeTintColor: variables.brandPrimary,
+                    inactiveTintColor: 'gray',
+                    style: {
+                        backgroundColor: variables.containerBgColor
+                    }
                 },
             }),
-            tabBarOptions: {
-                activeTintColor: variables.brandPrimary,
-                inactiveTintColor: 'gray',
-                style: {
-                    backgroundColor: variables.containerBgColor
-                }
-            },
+        }, {
+            mode: 'modal',
+            headerMode: 'none'
         }),
         navigationOptions: ({ navigation }) => ({
             title: navigation.getParam('routineName', ''),
@@ -131,9 +138,31 @@ const RouteStack = createStackNavigator({
             height: 0,
         },
         headerTintColor: variables.brandPrimary,
-    }
+    },
 });
 
-const Router = createAppContainer(RouteStack);
+const ModalStack = createStackNavigator({
+    Main: {
+        screen: RouteStack,
+    },
+
+    Exercises: {
+        screen: Exercises,
+        navigationOptions: ({ navigation }) => ({
+            title: navigation.getParam('routineName', ''),
+            headerStyle: {
+                backgroundColor:  variables.containerBgColor,
+                elevation: 0,
+                borderBottomWidth: 0,
+            },
+            headerTintColor: variables.brandPrimary,
+        }),
+    },
+}, {
+    mode: 'modal',
+    headerMode: 'none'
+});
+
+const Router = createAppContainer(ModalStack);
 
 export default Router;
